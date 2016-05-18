@@ -1,3 +1,4 @@
+import re
 import string
 
 import random
@@ -40,15 +41,20 @@ class ProjectHelper:
         project_list = []
         for element in wd.find_elements_by_css_selector("table[class='width100'] tbody tr[class='row-1']"):
             cells = element.find_elements_by_tag_name("td")
+            id = self.extract_id(cells[0].find_element_by_tag_name("a").get_attribute("href"))
             name = cells[0].find_element_by_tag_name("a").text
             description = cells[4].text
-            project_list.append(Project(name=name, description=description))
+            project_list.append(Project(id=id, name=name, description=description))
         for element in wd.find_elements_by_css_selector("table[class='width100'] tbody tr[class='row-2']"):
             cells = element.find_elements_by_tag_name("td")
+            id = self.extract_id(cells[0].find_element_by_tag_name("a").get_attribute("href"))
             name = cells[0].find_element_by_tag_name("a").text
             description = cells[4].text
-            project_list.append(Project(name=name, description=description))
+            project_list.append(Project(id=id, name=name, description=description))
         return project_list
+
+    def extract_id(self, link):
+        return re.sub('(.*)=', "", link)
 
     def random_name(self):
         digits = string.digits

@@ -10,3 +10,4 @@ def test_add_project(app):
     assert len(old_projects) + 1 == len(new_projects)
     old_projects.append(project)
     assert sorted(old_projects, key=Project.name) == sorted(new_projects, key=Project.name)
+    assert app.soap.is_project_added("administrator", "root", project)
